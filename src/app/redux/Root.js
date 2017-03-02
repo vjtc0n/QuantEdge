@@ -1,8 +1,7 @@
 // Import react
 import React, {Component} from 'react';
 import {Provider} from 'react-redux';
-import {Router, Route, hashHistory, applyRouterMiddleware} from 'react-router';
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
+import {Router, hashHistory} from 'react-router';
 
 // Import custom
 import configureStore from './store/configureStore';

@@ -1,6 +1,6 @@
 // Import react
 import React from 'react';
-import {Router, Route, IndexRoute, hashHistory} from 'react-router';
+import {Route, IndexRoute} from 'react-router';
 
 // Import components
 import AppMaster from '../views/AppMaster';

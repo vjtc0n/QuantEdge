@@ -10,6 +10,10 @@ import ItemRow from '../components/ItemRow'
 
 import * as InsideAppActions from '../actions/insideAppActions';
 
+/*
+* Fake data
+* */
+
 const data = [];
 for (let i=0; i< 30; i++) {
     let price = (Math.random() * (99.99 - 0.01) + 0.01)
@@ -106,9 +110,17 @@ class MainContainer extends Component {
     }
 
     componentDidMount() {
+
+        /*
+        * Reloading over 5 seconds
+        * */
         setInterval(() => {
             let self = this;
             let tempOldData = this.props.insideApp.allData
+
+            /*
+            * Update data for each Row
+            * */
             this.props.insideApp.allData.forEach(function (data) {
                 let updatedPrice = (Math.random() * ((data.price*( 1 + 0.05) - data.price*( 1 - 0.05)) + data.price*( 1 - 0.05)));
                 let updatedValue = Number(data.value) + Number((Math.random() * (30 - 10) + 10).toFixed(0));

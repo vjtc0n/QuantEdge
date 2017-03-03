@@ -5,8 +5,8 @@ import React,{Component} from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import faker from 'faker'
-
-import ItemRow from '../components/ItemRow'
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+import {AppBar, Tabs, Tab} from 'material-ui'
 
 import * as InsideAppActions from '../actions/insideAppActions';
 
@@ -56,55 +56,71 @@ class MainContainer extends Component {
         })
     }
 
-    onMainClick() {
-        this.setState({
-            tab: 'main'
-        })
-    }
-
 
     render() {
-        let tab = null
+        let datasource = null
         if (this.state.tab === 'main') {
-            tab = this.props.insideApp.allData.map((item, index)=> {
-                    return (
-                        <main
-                            key={`Item_${item.id}_${index}`}>
-                            <ItemRow data={item}/>
-                        </main>
-
-                    )
-                })
+            datasource = this.props.insideApp.allData
         } else if (this.state.tab === 'gainer') {
-            tab = this.props.insideApp.topGainersData.slice(0, 20).map((item, index)=> {
-                return (
-                    <main
-                        key={`Item_${item.id}_${index}`}>
-                        <ItemRow data={item}/>
-                    </main>
-
-                )
-            })
+            datasource = this.props.insideApp.topGainersData.slice(0, 20)
         } else {
-            tab = this.props.insideApp.topLosersData.slice(0, 20).map((item, index)=> {
-                return (
-                    <main
-                        key={`Item_${item.id}_${index}`}>
-                        <ItemRow data={item}/>
-                    </main>
-
-                )
-            })
+            datasource = this.props.insideApp.topLosersData.slice(0, 20)
         }
 
         return (
-            <div>
-                <div onClick={() => this.onMainClick()}>Quant Edge</div>
-                <br/>
-                <br/>
-                <div onClick={() => this.onTopGainersClick()}>Top Gainers</div>
-                <div onClick={() => this.onTopLosersClick()}>Top Losers</div>
-                {tab}
+            <div style={{backgroundColor: '#d9d9d9'}}>
+                <div style={{margin: 20}}>
+                    <AppBar
+                        showMenuIconButton={false}
+                        title="S&P/ASX">
+                        <Tabs style={{width: 400, marginRight: 150}}>
+                            <Tab
+                                onActive={() => this.onTopGainersClick()}
+                                label="TOP GAINERS" />
+                            <Tab
+                                onActive={() => this.onTopLosersClick()}
+                                label="TOP LOSERS" />
+                        </Tabs>
+                    </AppBar>
+                    <Table
+                        style={{marginBottom: 2}}
+                        fixedHeader={true}
+                        fixedFooter={true}
+                        selectable={false}
+                        multiSelectable={false}>
+                        <TableHeader
+                            displaySelectAll={false}
+                            adjustForCheckbox={false}
+                            enableSelectAll={false}>
+                            <TableRow>
+                                <TableHeaderColumn tooltip="The Code">Code</TableHeaderColumn>
+                                <TableHeaderColumn tooltip="The Company">Company</TableHeaderColumn>
+                                <TableHeaderColumn tooltip="The Price">Price</TableHeaderColumn>
+                                <TableHeaderColumn tooltip="The Value">Value</TableHeaderColumn>
+                                <TableHeaderColumn tooltip="The Change">Change</TableHeaderColumn>
+                                <TableHeaderColumn tooltip="The Percentage of Change">%Change</TableHeaderColumn>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody
+                            displayRowCheckbox={false}
+                            deselectOnClickaway={false}
+                            showRowHover={false}
+                            stripedRows={false}>
+                            {
+                                datasource.map( (row, index) => (
+                                    <TableRow key={index} selected={row.selected}>
+                                        <TableRowColumn style={{color: 'blue'}}>{row.code}</TableRowColumn>
+                                        <TableRowColumn style={{color: 'gray', fontWeight: 1}}>{row.company}</TableRowColumn>
+                                        <TableRowColumn>{row.price.toFixed(2)}</TableRowColumn>
+                                        <TableRowColumn>{row.value}</TableRowColumn>
+                                        <TableRowColumn style={{color: (row.change >= 0) ? '#33ff77' : 'red'}}>{row.change.toFixed(2)}</TableRowColumn>
+                                        <TableRowColumn style={{color: (row.percentChange >= 0) ? '#33ff77' : 'red'}}>{row.percentChange.toFixed(2)}</TableRowColumn>
+                                    </TableRow>
+                                ))
+                            }
+                        </TableBody>
+                    </Table>
+                </div>
             </div>
         )
     }
@@ -122,7 +138,9 @@ class MainContainer extends Component {
             * Update data for each Row
             * */
             this.props.insideApp.allData.forEach(function (data) {
-                let updatedPrice = (Math.random() * ((data.price*( 1 + 0.05) - data.price*( 1 - 0.05)) + data.price*( 1 - 0.05)));
+                let smallerPrice = data.price*( 1 - 0.05)
+                let biggerPrice = data.price*( 1 + 0.05)
+                let updatedPrice = (Math.random() * (biggerPrice - smallerPrice) + smallerPrice);
                 let updatedValue = Number(data.value) + Number((Math.random() * (30 - 10) + 10).toFixed(0));
                 let updatedTotal = (updatedPrice*updatedValue);
                 self.props.actions.updateRowData(

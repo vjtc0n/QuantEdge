@@ -10,7 +10,11 @@ Go to quantedge folder, then:
 npm install
 
 ```
+Then:
 
+```
+npm start
+```
       
 The server's running at:
 
@@ -18,6 +22,7 @@ The server's running at:
 localhost:3000 
 
 ```
+
 For testing this project, command:
 
 ```

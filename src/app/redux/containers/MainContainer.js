@@ -9,6 +9,7 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 import {AppBar, Tabs, Tab} from 'material-ui'
 
 import * as InsideAppActions from '../actions/insideAppActions';
+import * as API from '../../api/Backend'
 
 /*
 * Fake data
@@ -130,13 +131,13 @@ class MainContainer extends Component {
         /*
         * Reloading over 5 seconds
         * */
-        setInterval(() => {
+        /*setInterval(() => {
             let self = this;
             let tempOldData = this.props.insideApp.allData
 
-            /*
+            /!*
             * Update data for each Row
-            * */
+            * *!/
             this.props.insideApp.allData.forEach(function (data) {
                 let smallerPrice = data.price*( 1 - 0.05)
                 let biggerPrice = data.price*( 1 + 0.05)
@@ -156,7 +157,12 @@ class MainContainer extends Component {
             }, () => {
                 this.props.actions.savePrevioudData(tempOldData);
             })
-        }, 5000)
+        }, 5000)*/
+
+        API.getPost()
+            .then((json) => {
+                console.log(json)
+            })
 
     }
 }

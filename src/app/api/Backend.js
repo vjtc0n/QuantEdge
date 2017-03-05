@@ -8,11 +8,28 @@ var baseUrl = config.baseUrl;
 * Not in used
 * */
 
-export  async function savePost(data, accessToken) {
+export  async function savePost(data) {
     return await this._fetch({
         method: 'POST',
-        url: '/Posts?access_token=' + accessToken,
+        url: '/Posts',
         body: data
+    })
+        .then((res) => {
+            if (res.status === 200 || res.status === 201) {
+                return res.json
+            } else {
+                throw (res.json)
+            }
+        })
+        .catch((error) => {
+            throw (error)
+        })
+}
+
+export  async function getPost() {
+    return await this._fetch({
+        method: 'GET',
+        url: '/Posts?filter[include]=member'
     })
         .then((res) => {
             if (res.status === 200 || res.status === 201) {

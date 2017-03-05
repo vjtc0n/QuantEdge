@@ -6,6 +6,6 @@
 * Change host of Loopback server here
 * */
 
-var baseUrl = '';
+var baseUrl = 'http://192.168.1.20:3001/api';
 
 export {baseUrl};

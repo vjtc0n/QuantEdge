@@ -15,7 +15,7 @@ npm install
 The server's running at:
 
 ```
-localhost:3000/explorer 
+localhost:3000 
 
 ```
 For testing this project, command:
